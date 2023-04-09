@@ -4,6 +4,10 @@
 install.packages("torch")
 library(torch) #used for cholesky decomp
 
+#NOTE:
+#To call this function, please call the output as wsind **
+#otherwise, the link to other functions will be broken
+
 #INPUTS:
 #xobs - x values of observations
 #tobs - T values of time
