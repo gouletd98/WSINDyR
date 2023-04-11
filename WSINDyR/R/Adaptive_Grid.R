@@ -5,7 +5,7 @@
 # xobs:
 # params:
 
-Adaptive_Grid <- function(t, xobs, params = NA) {
+Adaptive_Grid <- function(t, xobs, params = NULL) {
 
   # function code here
 

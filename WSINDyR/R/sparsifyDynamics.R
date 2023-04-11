@@ -6,7 +6,7 @@
 # n:
 # M:
 
-sparsifyDynamics <- function(Theta, dXdt, n, M = NA) {
+sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
 
   # function code here
 
