@@ -24,7 +24,7 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
     x_values <- xobs[1]
     t_values <- tobs[1]
 
-    for (i in 2:length(obs)) {
+    for (i in 2:length(xobs)) {
       x_values <- cbind(x_values, xobs[i])
       t_values <- rbind(t_values, tobs[i])
     }

@@ -13,7 +13,7 @@ tf_mat_row <- function(g, gp, t, t1, tk, param) {
   # function code here
   N <- length(t)
 
-  if (param == "None") {
+  if (is.null(param) == TRUE) { #checking if the paramater is null or not
     pow <- 1
     gap <- 1
     nrm <- "I"
