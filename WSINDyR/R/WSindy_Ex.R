@@ -69,6 +69,15 @@ if (ode_name == 'Linear') {
   disp('No ODE selected')
 }
 
+# make sure to run simODE.R
+z = simODE(x0, t_span, t_eval, tol_ode, ode_name, ode_params, noise_ratio)
+weights -> z[1]
+t -> z[2]
+xobs -> z[3]
+rhs -> z[4]
+
+plot(t, xobs)
+
 #NEED to input some of the example code here
 
 #run initialization function
