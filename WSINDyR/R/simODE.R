@@ -4,7 +4,7 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                    noise_ratio) {
 
   if (ode_name == 'Linear') {
-    A <- params[1]
+    A <- params[1,]
 
     rhs <- function(t,x) {
       return(A%*%x) #return a dot x
