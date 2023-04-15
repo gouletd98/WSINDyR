@@ -10,25 +10,27 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
       return(A%*%x) #return a dot x
     }
 
-    weights <- list() #initialize the weights, but understand this could be wrong.
-    for (i in 1:ncol(A)) {
-      weights[[i]] <- cbind(diag(ncol(A)), A[,i])
+    #weights <- matrix(NULL, nrow = 2, ncol = 2) #initialize the weights, but understand this could be wrong.
+    for (i in 1:as.numeric(dim(A)[1])) {
+      weights <- cbind(diag(dim(A)[1]), A[,i])
     }
 
-    #LEFT OFF RIGHT HEREEEEEEEE!!
 
   } else if (ode_name == 'Logistic_Growth') {
-    ode_params <- c(2)
-    x0 <- t(c(.01)) #np.array([3,0]).T
-    t_span <- c(0, 15)
-    t_eval <- seq(0, 10, 0.005)
+    pow <- 2
+    rhs <- function(t,x) {
+      return(x - x^pow)
+    }
+
+    weights <- list(matrix(c(1, 1, pow, -1), nrow=2, byrow=TRUE))
 
   } else if (ode_name == 'Van_der_Pol') {
-    dt <- 0.01
-    ode_params <- c(4)
-    x0 <- t(c(0,1)) #np.array([3,0]).T
-    t_span <- c(0, 30)
-    t_eval <- seq(0, 30, dt)
+    mu <- params[1]
+    rhs <- function(t,x) {
+      return(c(x[2], mu*x[2]-mu*x[1]^2*x[2]-x[1]))
+    }
+
+
 
   } else if (ode_name == 'Duffing') {
     mu <- 0.2
