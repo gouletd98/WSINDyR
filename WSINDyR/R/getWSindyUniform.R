@@ -1,7 +1,7 @@
 #getWSindyUniform
 
 #get packages first
-install.packages("torch")
+#install.packages("torch")
 library(torch) #used for cholesky decomp
 
 #NOTE:
@@ -35,8 +35,8 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
   }
 
   M <- length(tobs)
-  thetbuild <- buildTheta(xobs) #this will need to be created ********
-  #with the above function created we can return the list here and call to it
+  thetbuild <- buildTheta(xobs)
+
   Theta_0 <- thetbuild$theta_0
   tags <- thetbuild$tags
   M_diag <- thetbuild$M_diag

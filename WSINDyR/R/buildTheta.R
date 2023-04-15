@@ -5,14 +5,15 @@
 
 # NOTE - need to loop back and check discrepancies with "self"
 
-buildTheta <- function(self, xobs) {
-  poolDatagen <- self$poolDatagen(xobs)
-  theta_0 <- poolDatagen[[1]]
-  tags <- poolDatagen[[2]]
+buildTheta <- function(xobs) {
 
-  if (self$scale_theta > 0) {
+  anspoolDatagen <- poolDatagen(xobs)
+  theta_0 <- anspoolDatagen$theta_0
+  tags <- anspoolDatagen$tags
+
+  if (wsinit@scale_theta > 0) {
     M_diag <- apply(theta_0, 2, function(col) {
-      norm(col, self$scale_theta)
+      norm(col, wsinit@scale_theta)
     })
     M_diag <- matrix(M_diag, ncol = 1)
     return(list(theta_0, tags, M_diag))

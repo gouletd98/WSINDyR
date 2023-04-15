@@ -27,7 +27,7 @@ ode_name = ode_names[ode_num]
 
 if (ode_name == 'Linear') {
   ode_params <- matrix(c(-0.1,-2,2,-0.1),nrow = 2, ncol=2) #np.array([[[-0.1, 2], [-2, -0.1]]])
-  x0 <- t(c(3,0)) #np.array([3,0]).T
+  x0 <- as.matrix(c(3,0), nrow = 2, ncol = 1) #np.array([3,0]).T
   t_span <- c(0, 15)
   t_eval <- linspace(0, 15, 1501)
 
@@ -71,16 +71,29 @@ if (ode_name == 'Linear') {
 
 # make sure to run simODE.R
 z = simODE(x0, t_span, t_eval, tol_ode, ode_name, ode_params, noise_ratio)
-weights -> z[1]
-t -> z[2]
-xobs -> z[3]
-rhs -> z[4]
+weights <- z$weights
+t <- z$sol[,1]
+xobs <- z$xobs
+rhs <- z$rhs
 
-plot(t, xobs)
+# plot(t, xobs)
+plot(t, xobs[,1], col = "blue", pch = 18)
+points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
+
+
+# Build WSINDy model  -----------------------------------------------------
+
+
 
 #NEED to input some of the example code here
 
 #run initialization function
-#WSINDy_model = initialize.wsindy(polys <- seq(0,5,1))
+WSINDy_model = wsinit
 
-#WSINDy_model <- getWSindyUniform
+anspoolDatagen <- poolDatagen(xobs)
+theta_0 <- anspoolDatagen$theta_0
+tags <- anspoolDatagen$tags
+
+thetbuild <- buildTheta(xobs)
+
+WSINDy_models <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)

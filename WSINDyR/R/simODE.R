@@ -8,16 +8,18 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                    noise_ratio) {
 
   if (ode_name == 'Linear') {
-    A <- params[1]
+    A <- params
 
-    rhs <- function(t,x) {
-      return(A%*%x) #return a dot x
+    rhs <- function(t,x0, params) {
+      with(as.list(c(x0,params)), {
+        dx <- A%*%x0
+        list(c(dx))
+      })
     }
-
-    #weights <- matrix(NULL, nrow = 2, ncol = 2) #initialize the weights, but understand this could be wrong.
     for (i in 1:as.numeric(dim(A)[1])) {
-      weights <- cbind(diag(dim(A)[1]), A[,i])
+      weights <- cbind(diag(dim(A)[1]), A[i,])
     }
+
 
 
   } else if (ode_name == 'Logistic_Growth') {
@@ -92,14 +94,24 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
 
   sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params)  #UNSURE what to call for parameters
 
-  x <- t(sol[,"Y"])
+  x <- sol[,2:3]
   xobs <- addNoise(x, noise_ratio)
 
   anslist <- list('weights' = weights,
-                  'sol.t' = t(sol),
+                  'sol' = sol,
                   'xobs' = xobs,
                   'rhs' = rhs)
 
   return(anslist)
 
+}
+
+lorenz <- function(x, sigma, beta, rho) {
+  a <- sigm*(x[2]-x[1])
+  b <- x[1]*(rho-x[3]-x[1])
+  c <- x[1]*x[2] - beta*x[3]
+
+  abc <- c(a,b,c)
+
+  return(abc) #return the array of solutions
 }
