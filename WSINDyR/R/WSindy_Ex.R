@@ -6,6 +6,9 @@
 install.packages("pracma")
 library(pracma)
 
+#also add the path with all functions
+
+
 # Determine ODE problem ---------------------------------------------------
 
 ode_num <- 1 # select ODE system from the list ode_names (1-6)
@@ -65,3 +68,10 @@ if (ode_name == 'Linear') {
 } else {
   disp('No ODE selected')
 }
+
+#NEED to input some of the example code here
+
+#run initialization function
+#WSINDy_model = initialize.wsindy(polys <- seq(0,5,1))
+
+#WSINDy_model <- getWSindyUniform
