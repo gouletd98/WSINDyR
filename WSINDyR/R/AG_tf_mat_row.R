@@ -46,7 +46,11 @@ AG_tf_mat_row <- function(g, gp, t, t1, tk, param = NULL) {
   } else {
     scale_fac <- mean(dts)
   }
+
   Vp_row <- Vp_row/scale_fac
   V_row <- V_row/scale_fac
-  list(V_row, Vp_row)
+
+  anslist <- list("Vp_row" = Vp_row,
+                  "V_row" = V_row)
+  return(anslist)
 }
