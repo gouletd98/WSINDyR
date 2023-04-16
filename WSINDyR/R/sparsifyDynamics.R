@@ -10,15 +10,15 @@
 # need to figure out proper formatting for that
 
 sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
-  if (is.null(M)) {
-    M <- matrix(1, nrow = ncol(Theta), ncol = 1)
+  if (is.null(M) == TRUE) {
+    M <- matrix(1, nrow = length(Theta), ncol = 1)
   }
 
   if (self$gamma == 0) {
     Theta_reg <- Theta
     dXdt_reg <- matrix(dXdt, nrow = length(dXdt), ncol = 1)
   } else {
-    nn <- ncol(Theta)
+    nn <- length(Theta)
     Theta_reg <- rbind(Theta, self$gamma * diag(nn))
     dXdt <- matrix(dXdt, nrow = length(dXdt), ncol = 1)
     dXdt_reg_temp <- rbind(dXdt, self$gamma * matrix(0, nrow = nn, ncol = n))

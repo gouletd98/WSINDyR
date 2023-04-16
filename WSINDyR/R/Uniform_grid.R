@@ -56,9 +56,9 @@ Uniform_grid <- function(t, L, s, param) {
 
   }
 
-  anslist <- list('V' <- V,
-                  'Vp' <- Vp,
-                  'grid' <- grid)
+  anslist <- list('V' = V,
+                  'Vp' = Vp,
+                  'grid' = grid)
 
   return(anslist)
 

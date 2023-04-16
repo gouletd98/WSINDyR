@@ -1,5 +1,5 @@
 #WSindy Example in R
-#last Revised - 4/5/23
+#last Revised - 4/16/23
 
 # Import Libraries --------------------------------------------------------
 
@@ -83,7 +83,8 @@ points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
 
 # Build WSINDy model  -----------------------------------------------------
 
-
+tobs <- t
+param <- ode_params
 
 #NEED to input some of the example code here
 

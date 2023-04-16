@@ -49,7 +49,7 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
   mats <- c() #empty vector
   ts_grids <- c() #empty vector
 
-  ugrid <- Uniform_grid(tobs, L, overlap, c(0, Inf, 0)) #This will need to be created****
+  ugrid <- Uniform_grid(tobs, L, overlap, param = c(0, "I", 0))
 
   #with above function we can return list and call to it
   V <- ugrid$V
@@ -66,10 +66,15 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
     if (wsinit@useGLS > 0) {
       Cov <- (Vp %*% t(Vp)) + wsinit@useGLS*diag(dim(V)[1])
       RT <- linalg_cholesky(Cov)
-      Gmod <- lm(formula = RT ~ V%*%Theta_0)
-      G <- Gmod$coefficients[2] #gets slope from this (python and R output opposite)
-      bmod <- lm(formula = RT ~ Vp%*%xobs[,i])
-      b <- bmod$coefficients[2]
+      # Gmod <- lm(formula = as.matrix(RT) ~ as.matrix(V)%*%as.matrix(Theta_0))
+      Gmod <- qr.solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0))
+      # G <- Gmod$coefficients[2] #gets slope from this (python and R output opposite)
+      G <- Gmod[1,]
+
+      bmod <- qr.solve(as.matrix(RT), Vp%*%xobs[,i])
+      # bmod <- lm(formula = as.matrix(RT) ~ Vp%*%xobs[,i])
+      b <- bmod[1,]
+      # b <- bmod$coefficients[2]
 
     } else {
       RT <- 1/norm(Vp, type = "2")
@@ -80,11 +85,11 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
     }
 
     if (wsinit@scaled_theta > 0) {
-      w_sparse_temp <- sparsifyDynamics((G*(1/T(M_diag))), b, 1) #*** NEEED to make function
+      w_sparse_temp <- sparsifyDynamics((G*(1/T(M_diag))), b, 1, NULL) #*** NEEED to make function
       temptemp <- as.vector((1/M_diag)*w_sparse_temp)
       w_sparse[,i] = temptemp
     } else {
-      w_sparse_temp <- sparsifyDynamics(G,b,1)
+      w_sparse_temp <- sparsifyDynamics(G,b,1, NULL)
       w_sparse[,i] <- as.vector(w_sparse_temp)
     }
 
@@ -92,10 +97,10 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
   }
 
   #now get everything into compiable state
-  anslist <- list('coef' <- w_sparse,
-                  'tags' <- tags,
-                  'mats' <- mats,
-                  'ts_grids' <- ts_grids)
+  anslist <- list('coef' = w_sparse,
+                  'tags' = tags,
+                  'mats' = mats,
+                  'ts_grids' = ts_grids)
   return(anslist)
 
   #MUST now call function with an output associated to get list.
