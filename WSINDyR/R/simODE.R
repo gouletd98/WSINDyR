@@ -8,11 +8,7 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                    noise_ratio) {
 
   if (ode_name == 'Linear') {
-<<<<<<< HEAD
     A <- params
-=======
-    A <- params[1,]
->>>>>>> eedf8a53db4019ef7fb694c3359fb53b5b75d548
 
     rhs <- function(t,x0, params) {
       with(as.list(c(x0,params)), {

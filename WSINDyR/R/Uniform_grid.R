@@ -21,15 +21,19 @@ Uniform_grid <- function(t, L, s, param) {
 
   grid <- append(grid, c(a,b)) #append a and b to grid
 
+  #make it a matrix now
+  grid <- matrix(grid, nrow = 1, ncol = 2)
+
   while ((b-overlap+L) <= (M-1)) {
     a <- b - overlap
     b <- a + L
-    grid <- append(grid, c(a,b))
+    grid <- rbind(grid, c(a,b))
 
   }
 
-  grid <- as.array(grid) #I think Python may be doing something diff here****
-  N <- length(grid)
+  #grid <- as.array(grid) #I think Python may be doing something diff here****
+  # N <- length(grid)
+  N <- dim(grid)[1]
 
   V <- matrix(0, nrow = N, ncol = M)
   Vp <- matrix(0, nrow = N, ncol = M)
@@ -40,8 +44,8 @@ Uniform_grid <- function(t, L, s, param) {
     gp <- gs$gp
 
     #********** THE FOLLOWING MAY NEED TO BE TWEAKED****
-    a <- grid[[k]][[1]]
-    b <- grid[[k]][[2]]
+    a <- grid[k,1]
+    b <- grid[k,2]
 
     Vs <- tf_mat_row(g, gp, t, a, b, param)
     V_row <- Vs$V_row

@@ -8,11 +8,11 @@
   #gamma - Tikhonoff regularization parameter
 
 wsindy <- setClass("wsindy", slots = list(polys = "numeric",
-                                          trigs = "matrix", scaled_theta = "numeric",
+                                          trigs = "list", scaled_theta = "numeric",
                                           ld = "numeric", gamma = "numeric",
                                           mult_trajectories = "character",
                                           useGLS = "numeric"),
-                   prototype = list(polys = seq(0,5,1), trigs = matrix(1,10,10),
+                   prototype = list(polys = seq(0,5,1), trigs = list(),
                                     scaled_theta = 0, ld = 0.001,
                                     gamma = 10^(-Inf), mult_trajectories = "False",
                                     useGLS = 10^-12))

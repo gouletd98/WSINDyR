@@ -41,5 +41,7 @@ basis_fcn <- function(p, q) {
     }
   }
 
-  return(list(g = g, gp = gp))
+  anslist <- list("g" = g,
+                  "gp" = gp)
+  return(anslist)
 }

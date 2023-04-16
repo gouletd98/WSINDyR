@@ -43,7 +43,7 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
   #following will only work on matrices
   n <- dim(xobs)[2] #gets the columns in xobs
-  w_sparse <- matrix(0, dim(Theta_0)[2], n) #create sparse matrix
+  w_sparse <- matrix(0, nrow = dim(Theta_0)[2], ncol = n) #create sparse matrix
 
   #**** Might need to change below based off initialization and appending
   mats <- c() #empty vector
