@@ -1,11 +1,14 @@
-## __init__ - initializes the values to be used
+# __init__.R
+# initializes the values to be used
 
-#INPUTS:
-  #Polys - monomial powers included in library
-  #trigs - sine / cosine frequencies to include in library
-  #scale_theta - normalzied columns of theta (0 means no normal, 2 means 12 normalization)
-  #ld - sequential thresholding parameter
-  #gamma - Tikhonoff regularization parameter
+# INPUTS...
+# polys: monomial powers included in library
+# trigs: sine / cosine frequencies to include in library
+# scale_theta: normalzied columns of theta (0 means no normal, 2 means 12 normalization)
+# ld: sequential thresholding parameter
+# gamma: Tikhonoff regularization parameter
+# mult_trajectories:
+# useGLS:
 
 wsindy <- setClass("wsindy", slots = list(polys = "numeric",
                                           trigs = "list", scaled_theta = "numeric",
@@ -35,4 +38,3 @@ wsinit <- new("wsindy") #, polys = seq(0,5,1), trigs = matrix(1,10,10),
                   #scaled_theta = 0, ld = 0.001,
                   #gamma = 10^(-Inf), mult_trajectories = "False",
               #useGLS = 10^-12)
-

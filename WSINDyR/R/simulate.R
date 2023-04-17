@@ -1,15 +1,15 @@
-#simulation function
+# simulate.R
 
-#get all packages
+### INPUTS...
+# x0: the initial guess
+# t_span: total time
+# t_eval: times to evaluate at
+
+# get all packages
 install.packages('deSolve')
-library(deSolve) #this allows us to solve IVPS
+library(deSolve) # this allows us to solve IVPS
 
-#now get into function
-
-#INPUTS:
-#x0 - the initial guess
-#t_span - total time
-#t_eval - times to evaluate at
+# now get into function
 
 simulate <- function(x0, t_span, t_eval) {
 
@@ -30,7 +30,7 @@ simulate <- function(x0, t_span, t_eval) {
     return (term %*% wsind$coef) #returns rhs dotted with coef from uniform
   }
 
-  #the example must start to be run before the following line
-  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params)  #UNSURE what to call for parameters
-  return(t(sol[,"Y"])) #returns transpose of y solution
+  # the example must start to be run before the following line
+  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params) # UNSURE what to call for parameters
+  return(t(sol[,"Y"])) # returns transpose of y solution
 }

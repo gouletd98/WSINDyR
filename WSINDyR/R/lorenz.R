@@ -1,6 +1,4 @@
-#lorenz.R
-
-#Creating the Lorenz function:
+# lorenz.R - creates the Lorenz function
 
 lorenz <- function(x, sigma, beta, rho) {
   a <- sigm*(x[2]-x[1])
@@ -9,5 +7,5 @@ lorenz <- function(x, sigma, beta, rho) {
 
   abc <- c(a,b,c)
 
-  return(abc) #return the array of solutions
+  return(abc) # return the array of solutions
 }

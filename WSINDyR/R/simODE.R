@@ -1,8 +1,8 @@
-#simODE - gets ode simulations
+# simODE.R - gets ODE simulations
 
 
 install.packages('deSolve')
-library(deSolve) #this allows us to solve IVPS
+library(deSolve) # this allows us to solve IVPS
 
 simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                    noise_ratio) {
@@ -103,7 +103,6 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                   'rhs' = rhs)
 
   return(anslist)
-
 }
 
 lorenz <- function(x, sigma, beta, rho) {
@@ -113,5 +112,5 @@ lorenz <- function(x, sigma, beta, rho) {
 
   abc <- c(a,b,c)
 
-  return(abc) #return the array of solutions
+  return(abc) # return the array of solutions
 }

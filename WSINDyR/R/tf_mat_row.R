@@ -6,7 +6,7 @@
 # t:
 # t1:
 # tk:
-# param: Defines the normalization parameter, must be in correct syntax
+# param: defines the normalization parameter, must be in correct syntax
 
 tf_mat_row <- function(g, gp, t, t1, tk, param) {
 
@@ -56,16 +56,16 @@ tf_mat_row <- function(g, gp, t, t1, tk, param) {
     } else {
       scale_fac <- mean(dts)
     }
-    Vp_row <- Vp_row/scale_fac
+
     V_row <- V_row/scale_fac
+    Vp_row <- Vp_row/scale_fac
+
   } else {
     # do nothing
   }
 
-
-  #now get everything into compiable state
-  anslist <- list("Vp_row" = Vp_row,
-                  "V_row" = V_row)
+  # now get everything into compiable state
+  anslist <- list("V_row" = V_row,
+                  "Vp_row" = Vp_row)
   return(anslist)
-
 }

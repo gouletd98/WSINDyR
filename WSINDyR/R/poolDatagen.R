@@ -2,11 +2,9 @@
 
 ### INPUTS...
 # xobs:
+
 install.packages("combinat")
 library(combinat)
-
-# NOTE - "self" needs to be defined manually
-# replace with "obj" or "object"? still not sure
 
 poolDatagen <- function(xobs) {
   # generate monomials
@@ -124,9 +122,8 @@ poolDatagen <- function(xobs) {
 
   tags <- rbind(matrix(0, nrow = 1, ncol = d), tags)
   # print(tags)
+
   anslist <- list("theta_0" = theta_0,
                   "tags" = tags)
   return(anslist)
-
-
 }

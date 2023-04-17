@@ -86,12 +86,10 @@ getWsindyAdaptive <- function(xobs, tobs, r_whm = 30, s = 16, K = 120, p = 2, ta
 
   }
 
-  #now get everything into compiable state
+  # now get everything into compilable state
   anslist <- list('coef' <- w_sparse,
                   'tags' <- tags,
                   'mats' <- mats,
                   'ts_grids' <- ts_grids)
   return(anslist)
-
-
 }

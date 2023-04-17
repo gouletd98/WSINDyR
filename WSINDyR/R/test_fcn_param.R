@@ -6,22 +6,22 @@
 # t:
 # p:
 
-# Not sure if "obj" should be included?
-# Although I suppose we need to call some sort of instantiated object to get "tau_p"
+# "tau_p" comes from 'getWsindyAdaptive.R', not "wsinit"
+# circle back to this!!!
 
-test_fcn_param <- function(obj, r, c, t, p = NULL) {
+test_fcn_param <- function(r, c, t, p = NULL) {
 
-  if (obj$tau_p < 0) {
-    obj$tau_p <- -obj$tau_p
+  if (wsinit@tau_p < 0) {
+    wsinit@tau_p <- -wsinit@tau_p
   } else {
-    p <- obj$tau_p
-    obj$tau_p <- 16
+    p <- wsinit@tau_p
+    wsinit@tau_p <- 16
   }
 
   dt <- t[2] - t[1]
   r_whm <- r * dt
 
-  A <- log2(10) * obj$tau_p
+  A <- log2(10) * wsinit@tau_p
 
   gg <- function(s) {
     return (-s^2 * ((1 - (r_whm/s)^2)^A - 1))
@@ -49,5 +49,8 @@ test_fcn_param <- function(obj, r, c, t, p = NULL) {
     b <- which(t >= (c + s))[1]
   }
 
-  return (list(p=p, a=a, b=b))
+  anslist <- list("p" = p,
+                  "a" = a,
+                  "b" = b)
+  return(anslist)
 }

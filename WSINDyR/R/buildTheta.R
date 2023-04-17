@@ -3,13 +3,11 @@
 ### INPUTS...
 # xobs:
 
-# NOTE - need to loop back and check discrepancies with "self"
-
 buildTheta <- function(xobs) {
 
-  anspoolDatagen <- poolDatagen(xobs)
-  theta_0 <- anspoolDatagen$theta_0
-  tags <- anspoolDatagen$tags
+  ans_poolDatagen <- poolDatagen(xobs)
+  theta_0 <- ans_poolDatagen$theta_0
+  tags <- ans_poolDatagen$tags
 
   if (wsinit@scaled_theta > 0) {
     # M_diag <- apply(theta_0, 2, function(col) {
@@ -26,6 +24,7 @@ buildTheta <- function(xobs) {
     return(anslist)
   } else {
     M_diag <- array(dim = c(0, 0))
+
     anslist <- list("theta_0" = theta_0,
                     "tags" = tags,
                     "M_diag" = M_diag)

@@ -1,4 +1,10 @@
-#getWSindyUniform
+# getWSindyUniform.R
+
+### INPUTS...
+# xobs: x values of observations
+# tobs: T values of time
+# L: test function support
+# overlap: overlap ratio
 
 #get packages first
 #install.packages("torch")
@@ -7,12 +13,6 @@ library(torch) #used for cholesky decomp
 #NOTE:
 #To call this function, please call the output as wsind **
 #otherwise, the link to other functions will be broken
-
-#INPUTS:
-#xobs - x values of observations
-#tobs - T values of time
-#L - test function support
-#overlap - overlap ratio
 
 #initalize parameters
 L <- 30
@@ -96,14 +96,11 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
   }
 
-  #now get everything into compiable state
+  # now get everything into compilable state
   anslist <- list('coef' = w_sparse,
                   'tags' = tags,
                   'mats' = mats,
                   'ts_grids' = ts_grids)
   return(anslist)
-
-  #MUST now call function with an output associated to get list.
-
-
+  # MUST now call function with an output associated to get list.
 }

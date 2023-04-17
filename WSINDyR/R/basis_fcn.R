@@ -4,7 +4,7 @@
 # p:
 # q:
 
-# Need to figure out how to specify (t, t1, tk)
+# Need to figure out how to specify (t, t1, tk) ???
 
 basis_fcn <- function(p, q) {
   g <- function(t, t1, tk) {

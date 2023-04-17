@@ -6,32 +6,29 @@
 # n:
 # M:
 
-# NOTE - 'self' parameter was not defined
-# need to figure out proper formatting for that
-
 sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
   if (is.null(M) == TRUE) {
     M <- matrix(1, nrow = length(Theta), ncol = 1)
   }
 
-  if (self$gamma == 0) {
+  if (wsinit@gamma == 0) {
     Theta_reg <- Theta
     dXdt_reg <- matrix(dXdt, nrow = length(dXdt), ncol = 1)
   } else {
     nn <- length(Theta)
-    Theta_reg <- rbind(Theta, self$gamma * diag(nn))
+    Theta_reg <- rbind(Theta, wsinit@gamma * diag(nn))
     dXdt <- matrix(dXdt, nrow = length(dXdt), ncol = 1)
-    dXdt_reg_temp <- rbind(dXdt, self$gamma * matrix(0, nrow = nn, ncol = n))
+    dXdt_reg_temp <- rbind(dXdt, wsinit@gamma * matrix(0, nrow = nn, ncol = n))
     dXdt_reg <- matrix(dXdt_reg_temp, nrow = length(dXdt_reg_temp), ncol = 1)
   }
 
   Xi <- M %*% solve(Theta_reg, dXdt_reg)
 
   for (i in 1:10) {
-    smallinds <- abs(Xi) < self$ld
+    smallinds <- abs(Xi) < wsinit@ld
     while (sum(smallinds) == length(Xi)) {
-      self$ld <- self$ld / 2
-      smallinds <- abs(Xi) < self$ld
+      wsinit@ld <- wsinit@ld / 2
+      smallinds <- abs(Xi) < wsinit@ld
     }
     Xi[smallinds] <- 0
   }
@@ -43,5 +40,6 @@ sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
     Xi[biginds, ind] <- M[biginds] %*% solve(Theta_reg[, biginds], temp)
   }
 
-  return(Xi)
+  anslist <- list("Xi" = Xi)
+  return(anslist)
 }

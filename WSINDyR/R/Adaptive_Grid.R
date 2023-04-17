@@ -7,8 +7,8 @@
 
 install.packages("Matrix")
 install.packages('pracma')
-library(Matrix) #to be able to run sparse diags
-library(pracma) #to be able to run repmat and linspace
+library(Matrix) # to be able to run sparse diags
+library(pracma) # to be able to run repmat and linspace
 
 Adaptive_Grid <- function(t, xobs, params = NULL) {
 
@@ -61,7 +61,6 @@ Adaptive_Grid <- function(t, xobs, params = NULL) {
 
   final_grid <- unique(final_grid) #keep only unique values
 
-  return(final_grid)
-
-
+  anslist <- list("final_grid" = final_grid)
+  return(anslist)
 }

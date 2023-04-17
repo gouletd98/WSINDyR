@@ -1,5 +1,5 @@
-#WSindy Example in R
-#last Revised - 4/16/23
+# WSINDy Example in R
+# Last Revised: 04/16/23
 
 # Import Libraries --------------------------------------------------------
 
