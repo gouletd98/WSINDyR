@@ -6,7 +6,7 @@
 # t_eval: times to evaluate at
 
 # get all packages
-install.packages('deSolve')
+#install.packages('deSolve')
 library(deSolve) # this allows us to solve IVPS
 
 # now get into function
@@ -19,18 +19,31 @@ simulate <- function(x0, t_span, t_eval) {
   tol_ode <- 10e-14 #tolerance for our ode
 
   #create a RHS function
-  rhs <- function(t, x) {
-    term <- rep(1,rows) #create vectors of one
-    for (row in 1:rows) {
-      for (col in 1:cols) {
-        term[row] <- term[row]*x[col]^(wsind$tags[row,col])
+  tagf <- wsind$tags
+  rhs <- function(t, x0, tagf) {
+    with(as.list(c(x0,tagf)), {
+      term <- rep(1,rows) #create vectors of one
+      for (row in 1:rows) {
+        for (col in 1:cols) {
+          term[row] <- term[row]*x0[col]^wsind$tags[row,col]
+          # print(c(row,col))
+        }
       }
-    }
-
-    return (term %*% wsind$coef) #returns rhs dotted with coef from uniform
+      termans <- term %*% wsind$coef
+      list(c(termans))
+    })
   }
+    # term <- rep(1,rows) #create vectors of one
+    # for (row in 1:rows) {
+    #   for (col in 1:cols) {
+    #     term[row] <- term[row]*x[col]^(wsind$tags[row,col])
+    #   }
+    # }
+
+    # return (term %*% wsind$coef) #returns rhs dotted with coef from uniform
+  # }
 
   # the example must start to be run before the following line
   sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params) # UNSURE what to call for parameters
-  return(t(sol[,"Y"])) # returns transpose of y solution
+  return(sol) # returns transpose of y solution
 }

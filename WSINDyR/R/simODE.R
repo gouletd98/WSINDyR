@@ -74,8 +74,17 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
     beta <- params[2]
     rho <- params[3]
 
-    rhs <- function(t,x) {
-      return(lorenz(x, sigma, beta, rho))
+    # rhs <- function(t,x) {
+    #   return(lorenz(x, sigma, beta, rho))
+    # }
+
+    rhs <- function(t, x0, params) {
+      with(as.list(c(x0, params)), {
+        dX <-  params[1] * (x0[2] - x0[1])
+        dY <-  x0[1]*(params[3]-x0[3]) - x0[2]
+        dZ <- x0[1]*x0[2] - params[2]*x0[3]
+        list(c(dX, dY, dZ))
+      })
     }
 
     datas <- c(0, 1, 0, sigma,
@@ -94,7 +103,7 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
 
   sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params)  #UNSURE what to call for parameters
 
-  x <- sol[,2:3]
+  x <- sol[,2:dim(sol)[2]]
   xobs <- addNoise(x, noise_ratio)
 
   anslist <- list('weights' = weights,

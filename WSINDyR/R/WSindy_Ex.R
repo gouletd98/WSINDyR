@@ -4,7 +4,7 @@
 # Import Libraries --------------------------------------------------------
 
 install.packages("pracma")
-library(pracma)
+library(pracma) #for linspace
 
 #also add the path with all functions
 
@@ -24,6 +24,7 @@ ode_names = c('Linear','Logistic_Growth',
               'Van_der_Pol','Duffing','Lotka_Volterra',
               'Lorenz')
 ode_name = ode_names[ode_num]
+ode_name = ode_names[6]
 
 if (ode_name == 'Linear') {
   ode_params <- matrix(c(-0.1,-2,2,-0.1),nrow = 2, ncol=2) #np.array([[[-0.1, 2], [-2, -0.1]]])
@@ -77,8 +78,9 @@ xobs <- z$xobs
 rhs <- z$rhs
 
 # plot(t, xobs)
-plot(t, xobs[,1], col = "blue", pch = 18)
+plot(t, xobs[,1], col = "blue", pch = 18, ylim = c(-30,50))
 points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
+points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
 
 
 # Build WSINDy model  -----------------------------------------------------
@@ -98,3 +100,18 @@ tags <- anspoolDatagen$tags
 thetbuild <- buildTheta(xobs)
 
 WSINDy_models <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
+wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
+
+wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.01))
+
+tws <- wsindsim[,1]
+xgs1 <- wsindsim[,2]
+xgs2 <- wsindsim[,3]
+par(mfrow=c(2,1))
+plot(t, xobs[,1], col = "blue", pch = 18, xlim = c(0,30))
+lines(tws, xgs1, col = "purple", lty = 2, lwd = 2)
+
+# points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
+plot(t, xobs[,2], col = 'orange', pch = 16, xlim = c(0,30))
+lines(tws, xgs2, col = 'green', lty = 2, lwd = 2)
+

@@ -54,20 +54,51 @@ poolDatagen <- function(xobs) {
   ##LEFT OFF HERE *********************************
   powers <- list()
   for (p in 1:P) {
-    size <- d + p - 1
-    dp <- 0
-    dq <- length(seq_len(size))-1
-    for (indices in combinat::combn(seq_len(size), d-1)) {
-      starts <- c(dp,dq)
-      #
-      # stops <- (indices-1) + size #c(indices, size)
-      # powers[[length(powers)+1]] <- as.list(stops - starts)
-      powers[[length(powers)+1]] <- as.list(starts)
-      dp <- dp + 1
-      dq <- dq - 1
+    if (as.numeric(d) == 2) {
+      size <- d + p - 1
+      dp <- 0
+      dq <- length(seq_len(size))-1
+      for (indices in combinat::combn(seq_len(size), d-1)) {
+        starts <- c(dp,dq)
+        #
+        # stops <- (indices-1) + size #c(indices, size)
+        # powers[[length(powers)+1]] <- as.list(stops - starts)
+        powers[[length(powers)+1]] <- as.list(starts)
+        dp <- dp + 1
+        dq <- dq - 1
+      }
+    }
+    else if (as.numeric(d) == 1) {
+
+    }
+    else if (as.numeric(d) == 3) {
+      size <- d + p - 1
+      dp <- 0
+      dq <- 0
+      dz <- 0
+      for (indices in combinat::combn(seq_len(size), d-1)) {
+        starts <- c(dp,dq,dz)
+
+      }
     }
   }
 
+
+  # powers <- list()
+  # for (p in 1:P) {
+  #   size <- d + p - 1
+  #   dp <- 0
+  #   dq <- length(seq_len(size))-1
+  #   for (indices in combinat::combn(seq_len(size), d-1)) {
+  #     starts <- c(dp,dq)
+  #     #
+  #     # stops <- (indices-1) + size #c(indices, size)
+  #     # powers[[length(powers)+1]] <- as.list(stops - starts)
+  #     powers[[length(powers)+1]] <- as.list(starts)
+  #     dp <- dp + 1
+  #     dq <- dq - 1
+  #   }
+  # }
 
   # rhs_functions <- list()
   # for (power in 1:length(powers)) {
