@@ -69,11 +69,11 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
       # Gmod <- lm(formula = as.matrix(RT) ~ as.matrix(V)%*%as.matrix(Theta_0))
       Gmod <- qr.solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0))
       # G <- Gmod$coefficients[2] #gets slope from this (python and R output opposite)
-      G <- Gmod[1,]
+      G <- Gmod #Gmod[,1] #might be the other way to match b
 
       bmod <- qr.solve(as.matrix(RT), Vp%*%xobs[,i])
       # bmod <- lm(formula = as.matrix(RT) ~ Vp%*%xobs[,i])
-      b <- bmod[1,]
+      b <- bmod[,1]
       # b <- bmod$coefficients[2]
 
     } else {
@@ -85,7 +85,7 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
     }
 
     if (wsinit@scaled_theta > 0) {
-      w_sparse_temp <- sparsifyDynamics((G*(1/T(M_diag))), b, 1, NULL) #*** NEEED to make function
+      w_sparse_temp <- sparsifyDynamics((G*(1/T(M_diag))), b, 1, NULL)
       temptemp <- as.vector((1/M_diag)*w_sparse_temp)
       w_sparse[,i] = temptemp
     } else {
