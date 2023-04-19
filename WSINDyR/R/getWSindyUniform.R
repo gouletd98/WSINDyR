@@ -90,7 +90,7 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
       w_sparse[,i] = temptemp
     } else {
       w_sparse_temp <- sparsifyDynamics(G,b,1, NULL)
-      w_sparse[,i] <- as.vector(w_sparse_temp)
+      w_sparse[,i] <- as.vector(w_sparse_temp$Xi)
     }
 
 
