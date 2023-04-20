@@ -102,7 +102,13 @@ thetbuild <- buildTheta(xobs)
 WSINDy_models <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
 wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
 
+wsind <- WSINDy_models
+
+#FOR LINEAR
 wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.01))
+
+#FOR LOrenz
+wsindsim <- simulate(x0 = x0, t_span, t_eval)
 
 tws <- wsindsim[,1]
 xgs1 <- wsindsim[,2]

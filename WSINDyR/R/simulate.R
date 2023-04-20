@@ -45,5 +45,7 @@ simulate <- function(x0, t_span, t_eval) {
 
   # the example must start to be run before the following line
   sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params) # UNSURE what to call for parameters
+  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
+             method = "rk4")
   return(sol) # returns transpose of y solution
 }
