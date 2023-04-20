@@ -47,10 +47,10 @@ tf_mat_row <- function(g, gp, t, t1, tk, param) {
   Vp_row[,tk] = Vp_row[,tk] + g(t[t1], t[t1], t[tk])
 
   if (pow != 0) {
-    if (ord == 0 ){
+    if (!is.na(ord) && ord == 0) {
       scale_fac <- norm(as.vector(V_row[,seq(t1,(tk+1),gap)]),
                        nrm)
-    } else if (ord == 1) {
+    } else if (!is.na(ord) && ord == 1) {
       scale_fac <- norm(as.vector(Vp_row[,seq(t1,(tk+1),gap)]),
                         nrm)
     } else {

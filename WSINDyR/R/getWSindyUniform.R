@@ -16,7 +16,7 @@ library(torch) #used for cholesky decomp
 
 #initalize parameters
 L <- 30
-overlap <- 0.5
+overlap <- 0.7
 
 getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
@@ -66,15 +66,33 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
     if (wsinit@useGLS > 0) {
       Cov <- (Vp %*% t(Vp)) + wsinit@useGLS*diag(dim(V)[1])
       RT <- linalg_cholesky(Cov)
-      # Gmod <- lm(formula = as.matrix(RT) ~ as.matrix(V)%*%as.matrix(Theta_0))
-      Gmod <- qr.solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0))
-      # G <- Gmod$coefficients[2] #gets slope from this (python and R output opposite)
-      G <- Gmod #Gmod[,1] #might be the other way to match b
 
-      bmod <- qr.solve(as.matrix(RT), Vp%*%xobs[,i])
-      # bmod <- lm(formula = as.matrix(RT) ~ Vp%*%xobs[,i])
-      b <- bmod[,1]
-      # b <- bmod$coefficients[2]
+      # Gmod <- qr.solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), tol = 1e-15)
+      # G <- Gmod #Gmod[,1] #might be the other way to match b
+
+      # Gmod <- lsfit(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), intercept = FALSE)
+      # G <- as.matrix(Gmod$coefficients[])
+
+      #CURRENT ONE
+      #G <- solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), tol = 1e-15)
+
+      A <- as.matrix(RT)
+      B <- as.matrix(V)%*%as.matrix(Theta_0)
+
+      G <- solve(t(A) %*% A) %*% t(A) %*% B
+
+      # bmod <- qr.solve(as.matrix(RT), Vp%*%xobs[,i])
+      # b <- bmod[,1]
+
+      # bmod <- lsfit(as.matrix(RT), Vp%*%xobs[,i], intercept = FALSE)
+      # b <- as.matrix(bmod$coefficients[])
+
+      #CURRENT ONE
+      # b <- solve(as.matrix(RT), Vp%*%xobs[,i], tol = 1e-15)
+
+      B2 <- Vp%*%xobs[,i]
+
+      b <- solve(t(A) %*% A) %*% t(A) %*% B2
 
     } else {
       RT <- 1/norm(Vp, type = "2")

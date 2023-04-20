@@ -21,7 +21,7 @@ simulate <- function(x0, t_span, t_eval) {
   #create a RHS function
   tagf <- wsind$tags
   rhs <- function(t, x0, tagf) {
-    with(as.list(c(x0,tagf)), {
+    with(as.list(c(x0)), {
       term <- rep(1,rows) #create vectors of one
       for (row in 1:rows) {
         for (col in 1:cols) {
@@ -38,8 +38,9 @@ simulate <- function(x0, t_span, t_eval) {
   # sol <- lsodes(y = x0, times = t_eval, func = rhs, parms = ode_params,
   #               rtol = 1e-12, atol = 1e-12)
 
-  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params) # UNSURE what to call for parameters
+  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
+             rtol = tol_ode) # UNSURE what to call for parameters
   # sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
-  #            method = "rk4")
+             # method = "rk4")
   return(sol) # returns transpose of y solution
 }

@@ -30,9 +30,6 @@ poolDatagen <- function(xobs) {
       dq <- length(seq_len(size))-1
       for (indices in combinat::combn(seq_len(size), d-1)) {
         starts <- c(dp,dq)
-        #
-        # stops <- (indices-1) + size #c(indices, size)
-        # powers[[length(powers)+1]] <- as.list(stops - starts)
         powers[[length(powers)+1]] <- as.list(starts)
         dp <- dp + 1
         dq <- dq - 1
@@ -41,11 +38,8 @@ poolDatagen <- function(xobs) {
     else if (as.numeric(d) == 1) {
       size <- d + p - 1
       dp <- 0
-      for (indices in 1:size) { #(indices in 1:seq_len(size))
-        starts <- c(dp)
-        powers[[length(powers)+1]] <- as.list(starts)
-        dp <- dp + 1
-      }
+      starts <- c(p)
+      powers[[length(powers)+1]] <- as.list(starts)
     }
     else if (as.numeric(d) == 3) {
       size <- d + p - 1
@@ -102,33 +96,6 @@ poolDatagen <- function(xobs) {
     }
   }
 
-  # powers <- list()
-  # for (p in 1:P) {
-  #   size <- d + p - 1
-  #   dp <- 0
-  #   dq <- length(seq_len(size))-1
-  #   for (indices in combinat::combn(seq_len(size), d-1)) {
-  #     starts <- c(dp,dq)
-  #     #
-  #     # stops <- (indices-1) + size #c(indices, size)
-  #     # powers[[length(powers)+1]] <- as.list(stops - starts)
-  #     powers[[length(powers)+1]] <- as.list(starts)
-  #     dp <- dp + 1
-  #     dq <- dq - 1
-  #   }
-  # }
-
-  # rhs_functions <- list()
-  # for (power in 1:length(powers)) {
-  #   rhs_functions[[power]] <- list(f2 = function(t, power) {f(t,power)})
-  #   # rhs_functions[[as.character(powers)]] <- list(f = function(t, x = power) { f(t, x) }, power)
-  #   # rhs_functions[[as.character(power)]] <- list(f = function(t, x = power) { f(t, x) }, power)
-  #   # rhs_functions[[power]] <- list(function(t, x=power) {
-  #   #   f(t, x)
-  #   #   },
-  #   #   power)
-  # }
-
   theta_0 <- matrix(1, nrow = n, ncol = 1)
 
   #tags <- do.call(rbind, lapply(powers, function(p) p$power))
@@ -149,17 +116,6 @@ poolDatagen <- function(xobs) {
     theta_0 <- cbind(theta_0, new_column)
   }
 
-  # # plug in
-  # for (k in seq_along(rhs_functions)) {
-  #   func <- rhs_functions[[k]]$f
-  #   new_column <- matrix(0, nrow = n, ncol = 1)
-  #   for (i in 1:n) {
-  #     new_column[i] <- func(xobs[i,])
-  #   }
-  #   theta_0 <- cbind(theta_0, new_column)
-  # }
-
-  #DO WE EVEN NEED TRIGS??????
   # trigs:
   #initalize tags matrix
   tags <- matrix(unlist(powers), nrow = length(powers), ncol = d, byrow = TRUE)
@@ -179,7 +135,6 @@ poolDatagen <- function(xobs) {
 
 
   tags <- rbind(matrix(0, nrow = 1, ncol = d), tags)
-  # print(tags)
 
   anslist <- list("theta_0" = theta_0,
                   "tags" = tags)

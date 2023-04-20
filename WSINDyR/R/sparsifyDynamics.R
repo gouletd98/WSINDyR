@@ -23,22 +23,20 @@ sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
     dXdt_reg <- matrix(dXdt_reg_temp, nrow = length(dXdt_reg_temp), ncol = 1)
   }
 
-  #Xi <- M %*% solve(Theta_reg, dXdt_reg)
-  # trm2 <- lm(formula = Theta_reg ~ dXdt_reg)
-  # trm2m <- as.matrix(trm2$coefficients)
-  # Xi <- t(M) %*% trm2$qr$qr[,2]
-  # Xi <- M %*% trm2m
-  #If power is 1, need to transpose the Theta
-  if (length(ode_params) == 1) {
-    Xi <- M * qr.solve(Theta_reg, dXdt_reg)
-    # Xi <- M * trm2$coefficients[1,] #LEFT OFF HERE - NEED TO FIGURE OUT HOW TO DO THIS
-  } else {
-    Xi <- M * qr.solve(Theta_reg, dXdt_reg)
-  }
-  #Xi <- M %*% t(qr.solve(Theta_reg, dXdt_reg))
+
   # Xi <- M * qr.solve(Theta_reg, dXdt_reg)
-  #correct to make a row vector
-  #Xi <- Xi[1,]
+
+  #CURRENT
+  # Ximod <- lsfit(Theta_reg,dXdt_reg, intercept = FALSE)
+  # Xi <- M * as.matrix(Ximod$coefficients[])
+
+  A <- Theta_reg
+  B <- dXdt_reg
+
+  Ximod <- solve(t(A) %*% A) %*% t(A) %*% B
+  Xi <- M * Ximod
+
+  #Xi <- M * solve(Theta_reg, dXdt_reg)
 
   for (i in 1:10) {
     smallinds <- as.numeric(abs(Xi) < wsinit@ld)
@@ -53,7 +51,16 @@ sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
     biginds <- as.numeric(!smallinds[ind])
     temp <- dXdt_reg[, ind]
     temp <- matrix(temp, nrow = length(temp), ncol = 1)
+    # xitrm2 <- lsfit(Theta_reg[, biginds], temp, intercept = FALSE)
+    # Xi[biginds, ind] <- M[biginds] %*% as.matrix(xitrm2$coefficients[])
+
+    #CURRENT
     Xi[biginds, ind] <- M[biginds] %*% qr.solve(Theta_reg[, biginds], temp)
+
+    # xitrm2 <- solve(t(Theta_reg[, biginds]) %*% Theta_reg[, biginds]) %*%
+    #   t(Theta_reg[, biginds]) %*% temp
+    #
+    # Xi[biginds, ind] <- M[biginds] %*% xitrm2
   }
 
   anslist <- list("Xi" = Xi)
