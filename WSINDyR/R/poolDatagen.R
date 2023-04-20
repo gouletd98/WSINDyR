@@ -16,36 +16,6 @@ poolDatagen <- function(xobs) {
     P <- 0
   }
 
-  #TRYING TO ADAPT FROM MATLAB INSTEAD AS A TEST:
-
-  # #create partition function:
-  # partitionsNK <- function(n, k) {
-  #   if (k == 1) {
-  #     return(matrix(n, nrow = 1))
-  #   }
-  #   if (n == k) {
-  #     return(matrix(1, nrow = 1, ncol = k))
-  #   }
-  #   A <- partitionsNK(n - 1, k - 1)
-  #   row_A <- nrow(A)
-  #   B <- rbind(cbind(matrix(k, nrow = row_A, ncol = 1), A),
-  #              cbind(matrix(1, nrow = row_A, ncol = 1), A[, 1:(k - 1)]))
-  #   return(B)
-  # }
-  #
-  # ind <- 0
-  # tags <- list()
-  # for (p in 1:P) {
-  #   monom_powers <- partitionNK(wsinit@polys[p],d)
-  #   num_monoms <- length(monom_powers) #gets dimension here
-  #   for (j in 1:num_monoms) {
-  #     theta_0[,ind+1] <- apply(xobs^(monom_powers[j,]), 2, prod) #apply product across columns
-  #     ind <- ind+1
-  #   }
-  #
-  #   tags <- append(tags, monom_powers) #append powers to list
-  # }
-
 
   f <- function(t, x) {
     return(prod(t^x))
@@ -69,7 +39,13 @@ poolDatagen <- function(xobs) {
       }
     }
     else if (as.numeric(d) == 1) {
-
+      size <- d + p - 1
+      dp <- 0
+      for (indices in 1:size) { #(indices in 1:seq_len(size))
+        starts <- c(dp)
+        powers[[length(powers)+1]] <- as.list(starts)
+        dp <- dp + 1
+      }
     }
     else if (as.numeric(d) == 3) {
       size <- d + p - 1
@@ -163,7 +139,7 @@ poolDatagen <- function(xobs) {
       if (as.numeric(d) == 2) {
         new_column[i] <- f(xobs[i,], c(powers[[k]][[1]],powers[[k]][[2]]))
       } else if (as.numeric(d) == 1) {
-        #do one power stuff
+        new_column[i] <- f(xobs[i,], c(powers[[k]][[1]]))
       } else if (as.numeric(d) == 3) {
         new_column[i] <- f(xobs[i,], c(powers[[k]][[1]],powers[[k]][[2]],
                            powers[[k]][[3]]))

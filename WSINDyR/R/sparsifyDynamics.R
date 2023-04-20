@@ -28,9 +28,15 @@ sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
   # trm2m <- as.matrix(trm2$coefficients)
   # Xi <- t(M) %*% trm2$qr$qr[,2]
   # Xi <- M %*% trm2m
-
+  #If power is 1, need to transpose the Theta
+  if (length(ode_params) == 1) {
+    Xi <- M * qr.solve(Theta_reg, dXdt_reg)
+    # Xi <- M * trm2$coefficients[1,] #LEFT OFF HERE - NEED TO FIGURE OUT HOW TO DO THIS
+  } else {
+    Xi <- M * qr.solve(Theta_reg, dXdt_reg)
+  }
   #Xi <- M %*% t(qr.solve(Theta_reg, dXdt_reg))
-  Xi <- M * qr.solve(Theta_reg, dXdt_reg)
+  # Xi <- M * qr.solve(Theta_reg, dXdt_reg)
   #correct to make a row vector
   #Xi <- Xi[1,]
 

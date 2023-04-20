@@ -33,19 +33,13 @@ simulate <- function(x0, t_span, t_eval) {
       list(c(termans))
     })
   }
-    # term <- rep(1,rows) #create vectors of one
-    # for (row in 1:rows) {
-    #   for (col in 1:cols) {
-    #     term[row] <- term[row]*x[col]^(wsind$tags[row,col])
-    #   }
-    # }
-
-    # return (term %*% wsind$coef) #returns rhs dotted with coef from uniform
-  # }
 
   # the example must start to be run before the following line
+  # sol <- lsodes(y = x0, times = t_eval, func = rhs, parms = ode_params,
+  #               rtol = 1e-12, atol = 1e-12)
+
   sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params) # UNSURE what to call for parameters
-  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
-             method = "rk4")
+  # sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
+  #            method = "rk4")
   return(sol) # returns transpose of y solution
 }

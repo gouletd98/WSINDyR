@@ -25,8 +25,11 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
   } else if (ode_name == 'Logistic_Growth') {
 
     pow <- 2
-    rhs <- function(t,x) {
-      return(x - x^pow)
+    rhs <- function(t,x0, params, pow) {
+      with(as.list(c(x0,params)), {
+        dx <- x0 - x0^params[1]
+        list(dx)
+      })
     }
 
     weights <- list(matrix(c(1, 1, pow, -1), nrow=2, byrow=TRUE))
@@ -101,7 +104,7 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
     disp('No ODE selected')
   }
 
-  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params)  #UNSURE what to call for parameters
+  sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params)
 
   x <- sol[,2:dim(sol)[2]]
   xobs <- addNoise(x, noise_ratio)

@@ -5,13 +5,15 @@
 
 install.packages("pracma")
 library(pracma) #for linspace
-
+library(torch)
+library(deSolve)
+library(combinat)
 #also add the path with all functions
 
 
 # Determine ODE problem ---------------------------------------------------
 
-ode_num <- 1 # select ODE system from the list ode_names (1-6)
+ode_num <- 2 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15                    # sol_ivp tolerance (abs and rel) for generating data
 noise_ratio <- 0.1  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
@@ -24,7 +26,6 @@ ode_names = c('Linear','Logistic_Growth',
               'Van_der_Pol','Duffing','Lotka_Volterra',
               'Lorenz')
 ode_name = ode_names[ode_num]
-ode_name = ode_names[6]
 
 if (ode_name == 'Linear') {
   ode_params <- matrix(c(-0.1,-2,2,-0.1),nrow = 2, ncol=2) #np.array([[[-0.1, 2], [-2, -0.1]]])
@@ -74,11 +75,11 @@ if (ode_name == 'Linear') {
 z = simODE(x0, t_span, t_eval, tol_ode, ode_name, ode_params, noise_ratio)
 weights <- z$weights
 t <- z$sol[,1]
-xobs <- z$xobs
+xobs <- as.matrix(z$xobs)
 rhs <- z$rhs
 
 # plot(t, xobs)
-plot(t, xobs[,1], col = "blue", pch = 18, ylim = c(-30,50))
+plot(t, xobs[,1], col = "blue", pch = 18) #, ylim = c(-30,50))
 points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
 points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
 
