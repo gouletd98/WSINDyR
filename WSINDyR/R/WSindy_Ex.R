@@ -14,9 +14,9 @@ library(combinat)
 
 # Determine ODE problem ---------------------------------------------------
 
-ode_num <- 4 # select ODE system from the list ode_names (1-6)
+ode_num <- 6 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15                    # sol_ivp tolerance (abs and rel) for generating data
-noise_ratio <- 0.1  #set signal-to-noise ratio(L2 sense)
+noise_ratio <- 0.0  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
 #np.random.seed(42)                 #reproducibility
 useFD_SINDy <- 1                    #SINDy finite difference differentiation order, if 0 uses TVdiff
@@ -81,7 +81,7 @@ rhs <- z$rhs
 
 # plot(t, xobs)
 plot(t, xobs[,1], col = "blue", pch = 18) #, ylim = c(-30,50))
-points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
+points(t, xobs[,2], col = 'orange', pch = 16)
 
 #if Lorenz
 points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
@@ -103,10 +103,11 @@ tags <- anspoolDatagen$tags
 
 thetbuild <- buildTheta(xobs)
 
+wsinit@polys <- seq(0,2,1)
 wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
 
 #FOR LINEAR
-wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
+# wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
 
 #FOR LOrenz
 wsindsim <- simulate(x0 = x0, t_span, t_eval)
