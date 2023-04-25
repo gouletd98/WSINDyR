@@ -1,5 +1,5 @@
 # WSINDy Example in R
-# Last Revised: 04/16/23
+# Last Revised: 04/24/23
 
 # Import Libraries --------------------------------------------------------
 
@@ -16,7 +16,7 @@ library(combinat)
 
 ode_num <- 6 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15                    # sol_ivp tolerance (abs and rel) for generating data
-noise_ratio <- 0.0  #set signal-to-noise ratio(L2 sense)
+noise_ratio <- 0.075  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
 #np.random.seed(42)                 #reproducibility
 useFD_SINDy <- 1                    #SINDy finite difference differentiation order, if 0 uses TVdiff
@@ -80,6 +80,7 @@ xobs <- as.matrix(z$xobs)
 rhs <- z$rhs
 
 # plot(t, xobs)
+par(mfrow=c(1,1))
 plot(t, xobs[,1], col = "blue", pch = 18) #, ylim = c(-30,50))
 points(t, xobs[,2], col = 'orange', pch = 16)
 
@@ -92,25 +93,16 @@ points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
 tobs <- t
 param <- ode_params
 
-#NEED to input some of the example code here
-
-#run initialization function
-WSINDy_model = wsinit
-
-anspoolDatagen <- poolDatagen(xobs)
-theta_0 <- anspoolDatagen$theta_0
-tags <- anspoolDatagen$tags
-
-thetbuild <- buildTheta(xobs)
-
+#If polys need to be changed:
 wsinit@polys <- seq(0,2,1)
+
 wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
 
 #FOR LINEAR
-# wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
+wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
 
-#FOR LOrenz
-wsindsim <- simulate(x0 = x0, t_span, t_eval)
+#FOR Lorenz
+#wsindsim <- simulate(x0 = x0, t_span, t_eval)
 
 tws <- wsindsim[,1]
 xgs1 <- wsindsim[,2]
@@ -119,7 +111,6 @@ par(mfrow=c(2,1))
 plot(t, xobs[,1], col = "blue", pch = 18, xlim = c(0,30))
 lines(tws, xgs1, col = "purple", lty = 2, lwd = 2)
 
-# points(t, xobs[,2], col = 'orange', pch = 16, add =TRUE)
 plot(t, xobs[,2], col = 'orange', pch = 16, xlim = c(0,30))
 lines(tws, xgs2, col = 'green', lty = 2, lwd = 2)
 
