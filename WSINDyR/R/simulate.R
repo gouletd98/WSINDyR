@@ -39,7 +39,7 @@ simulate <- function(x0, t_span, t_eval) {
   #               rtol = 1e-12, atol = 1e-12)
 
   sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
-             rtol = tol_ode) # UNSURE what to call for parameters
+             rtol = tol_ode, method = "ode45") # UNSURE what to call for parameters
   # sol <- ode(y = x0, times = t_eval, func = rhs, parms = ode_params,
              # method = "rk4")
   return(sol) # returns transpose of y solution

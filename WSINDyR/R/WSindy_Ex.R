@@ -66,7 +66,7 @@ if (ode_name == 'Linear') {
   ode_params <- c(10, 8/3, 27)
   x0 <- t(c(-8, 10, 27)) #np.array([3,0]).T
   t_span <- c(0.001, 10)
-  t_eval <- linspace(0.001, 10, 5000)
+  t_eval <- linspace(0.001, 10, 50000)
 
 } else {
   disp('No ODE selected')
@@ -102,7 +102,7 @@ wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
 wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
 
 #FOR Lorenz
-#wsindsim <- simulate(x0 = x0, t_span, t_eval)
+wsindsim <- simulate(x0 = x0, t_span, t_eval)
 
 tws <- wsindsim[,1]
 xgs1 <- wsindsim[,2]

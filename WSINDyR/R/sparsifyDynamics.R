@@ -34,6 +34,7 @@ sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
   B <- dXdt_reg
 
   Ximod <- solve(t(A) %*% A) %*% t(A) %*% B
+  # Ximod <- t((t(A)%*%A))%*%t(A)%*%B
   Xi <- M * Ximod
 
   #Xi <- M * solve(Theta_reg, dXdt_reg)
