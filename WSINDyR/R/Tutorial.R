@@ -8,6 +8,10 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
+x <- as.vector(1, 3, 5, 7, 9)
+y <- as.vector(2, 4, 6, 8, 10)
+z <- 5
+
 test <- function(x, y, z) {
   result <- vector(mode = "numeric", length = length(x))
   for (i in seq_along(x)) {
@@ -22,3 +26,7 @@ test <- function(x, y, z) {
   }
   return(result)
 }
+
+### lstsq() example
+
+### qr.solve() example - sparsifyDynamics.R
