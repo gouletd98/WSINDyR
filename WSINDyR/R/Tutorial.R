@@ -1,6 +1,6 @@
 ### Tutorial.R (APPM 4720/5720)
 ### Adam Manaster and Derek Goulet
-### Last Edit on 04/25/2023
+### Last Edit on 04/26/2023
 
 # Basic Function ----------------------------------------------------------
 
@@ -43,46 +43,53 @@ head(df_iris)
 df_iris[10,]
 
 # get values in 5th column
-df_iris$V5 # or ... `df_iris[5]`
+df_iris$V5 # or `df_iris[5]`
 
 
 
-# Example w/ `lstsq()` and Plotting ---------------------------------------
+# Example w/ `lm()` and Plotting ------------------------------------------
 
-### finds the coefficients of a linear equation that best fits a set of data points
+### finding the coefficients of a linear equation that best fits a set of data points (least squares)
 
 # load in `ggplot2` to demonstrate its plotting capabilities
 library(ggplot2)
-library(prama)
-
-# Define the lstsq() function
-lstsq <- function(X, Y) {
-  solve(t(X) %*% X) %*% t(X) %*% Y
-}
 
 # generate sample data
 x <- 1:10
-y <- 3 * x + rnorm(10)
+y <- 3 * x + rnorm(10) # y = 3x (with noise)
 
 # create data frame with the x and y values
 df <- data.frame(x = x, y = y)
 
-# use `lstsq()`` to fit a linear model
-X <- cbind(1, x)
-b <- lstsq(x, y)
-predicted_y <- lm(y ~ x)
-predicted_y <- x %*% b
+# use built-in function `lm()` to fit a linear model
+# similar to numpy.linalg.lstsq() (or scipy function) in Python
+model <- lm(y ~ x)
+b <- coef(model)[1]
+m <- coef(model)[2]
+predicted_y <- m*x + b
 
-# plot the data using ggplot2
+# plot the data using `ggplot2`
+# highly customizable!
 ggplot(data = df, aes(x = x, y = y)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  geom_line(aes(y = predicted_y), linetype = "dashed") +
-  labs(title = "Linear Regression", x = "x", y = "y")
+  geom_line(aes(y = predicted_y), linetype = "dashed", color = "red") +
+  labs(title = "Linear Regression", x = "X", y = "Y")
 
 
 
 # Example w/ `qr.solve()` -------------------------------------------------
 
-# sparsifyDynamics.R
+# functionality incorporated in sparsifyDynamics.R
 
+# create matrix `A` and vector `b`
+A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3)
+b <- c(7, 8)
+
+# solve the system of equations 'Ax = b' using QR decomposition
+# QR decomp. is a common matrix factorization technique
+  # expresses `A` as product of orth. matrix Q and upper triang. matrix R
+  # helps solve system more efficiently
+x <- qr.solve(A, b)
+
+# output the solution
+x
