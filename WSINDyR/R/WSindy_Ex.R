@@ -66,7 +66,7 @@ if (ode_name == 'Linear') {
   ode_params <- c(10, 8/3, 27)
   x0 <- t(c(-8, 10, 27)) #np.array([3,0]).T
   t_span <- c(0.001, 10)
-  t_eval <- linspace(0.001, 10, 50000)
+  t_eval <- linspace(0.001, 10, 5000) #last tried 15000
 
 } else {
   disp('No ODE selected')
