@@ -55,6 +55,11 @@ df_iris$V5 # or ... `df_iris[5]`
 library(ggplot2)
 library(prama)
 
+# Define the lstsq() function
+lstsq <- function(X, Y) {
+  solve(t(X) %*% X) %*% t(X) %*% Y
+}
+
 # generate sample data
 x <- 1:10
 y <- 3 * x + rnorm(10)
@@ -64,8 +69,9 @@ df <- data.frame(x = x, y = y)
 
 # use `lstsq()`` to fit a linear model
 X <- cbind(1, x)
-b <- lstsq(X, y)
-predicted_y <- X %*% b
+b <- lstsq(x, y)
+predicted_y <- lm(y ~ x)
+predicted_y <- x %*% b
 
 # plot the data using ggplot2
 ggplot(data = df, aes(x = x, y = y)) +
