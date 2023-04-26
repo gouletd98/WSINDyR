@@ -39,7 +39,7 @@ Uniform_grid <- function(t, L, s, param) {
   Vp <- matrix(0, nrow = N, ncol = M)
 
   for (k in 1:N) {
-    gs <- basis_fcn(p,p) #Need to create function
+    gs <- basis_fcn(p,p)
     g <- gs$g
     gp <- gs$gp
 

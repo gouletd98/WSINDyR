@@ -21,7 +21,6 @@ poolDatagen <- function(xobs) {
     return(prod(t^x))
   }
 
-  ##LEFT OFF HERE *********************************
   powers <- list()
   for (p in 1:P) {
     if (as.numeric(d) == 2) {
@@ -97,8 +96,6 @@ poolDatagen <- function(xobs) {
   }
 
   theta_0 <- matrix(1, nrow = n, ncol = 1)
-
-  #tags <- do.call(rbind, lapply(powers, function(p) p$power))
 
   for (k in 1:length(powers)) {
     new_column <- matrix(0, nrow = n, ncol = 1)

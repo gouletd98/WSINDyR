@@ -67,12 +67,6 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
       Cov <- (Vp %*% t(Vp)) + wsinit@useGLS*diag(dim(V)[1])
       RT <- linalg_cholesky(Cov)
 
-      # Gmod <- qr.solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), tol = 1e-15)
-      # G <- Gmod #Gmod[,1] #might be the other way to match b
-
-      # Gmod <- lsfit(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), intercept = FALSE)
-      # G <- as.matrix(Gmod$coefficients[])
-
       #CURRENT ONE
       #G <- solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), tol = 1e-15)
 
@@ -80,12 +74,6 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
       B <- as.matrix(V)%*%as.matrix(Theta_0)
 
       G <- solve(t(A) %*% A) %*% t(A) %*% B
-
-      # bmod <- qr.solve(as.matrix(RT), Vp%*%xobs[,i])
-      # b <- bmod[,1]
-
-      # bmod <- lsfit(as.matrix(RT), Vp%*%xobs[,i], intercept = FALSE)
-      # b <- as.matrix(bmod$coefficients[])
 
       #CURRENT ONE
       # b <- solve(as.matrix(RT), Vp%*%xobs[,i], tol = 1e-15)
@@ -103,8 +91,8 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
     }
 
     if (wsinit@scaled_theta > 0) {
-      w_sparse_temp <- sparsifyDynamics((G*(1/T(M_diag))), b, 1, NULL)
-      temptemp <- as.vector((1/M_diag)*w_sparse_temp)
+      w_sparse_temp <- sparsifyDynamics((G%*%(1/(M_diag))), b, 1, NULL)
+      temptemp <- as.vector((1/M_diag)%*%as.matrix(w_sparse_temp$Xi))
       w_sparse[,i] = temptemp
     } else {
       w_sparse_temp <- sparsifyDynamics(G,b,1, NULL)

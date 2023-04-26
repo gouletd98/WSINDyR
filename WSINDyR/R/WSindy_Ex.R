@@ -14,9 +14,9 @@ library(combinat)
 
 # Determine ODE problem ---------------------------------------------------
 
-ode_num <- 6 # select ODE system from the list ode_names (1-6)
+ode_num <- 3 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15                    # sol_ivp tolerance (abs and rel) for generating data
-noise_ratio <- 0.075  #set signal-to-noise ratio(L2 sense)
+noise_ratio <- 0.05  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
 #np.random.seed(42)                 #reproducibility
 useFD_SINDy <- 1                    #SINDy finite difference differentiation order, if 0 uses TVdiff
@@ -25,7 +25,7 @@ use_preset_params <- "True"          #Use parameters specified in gen_data
 #ode params
 ode_names = c('Linear','Logistic_Growth',
               'Van_der_Pol','Duffing','Lotka_Volterra',
-              'Lorenz')
+              'Lorenz', 'SIR')
 ode_name = ode_names[ode_num]
 
 if (ode_name == 'Linear') {
@@ -68,6 +68,12 @@ if (ode_name == 'Linear') {
   t_span <- c(0.001, 10)
   t_eval <- linspace(0.001, 10, 5000) #last tried 15000
 
+} else if (ode_name == 'SIR') {
+  ode_params <- c(0.4, 0.04) #beta, gamma
+  x0 <- t(c(997, 3, 0)) #S(0), I(0), R(0)
+  t_span <- c(0,100)
+  t_eval <- seq(0,100, 0.01)
+
 } else {
   disp('No ODE selected')
 }
@@ -94,12 +100,14 @@ tobs <- t
 param <- ode_params
 
 #If polys need to be changed:
-wsinit@polys <- seq(0,2,1)
+wsinit@polys <- seq(0,3,1)
+wsinit@ld <- 0.1
+wsinit@scaled_theta <- 0
 
-wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
+wsind <- getWSindyUniform(xobs, t, L = 100, overlap = 0.7)
 
 #FOR LINEAR
-wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
+#wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
 
 #FOR Lorenz
 wsindsim <- simulate(x0 = x0, t_span, t_eval)
@@ -108,9 +116,14 @@ tws <- wsindsim[,1]
 xgs1 <- wsindsim[,2]
 xgs2 <- wsindsim[,3]
 par(mfrow=c(2,1))
-plot(t, xobs[,1], col = "blue", pch = 18, xlim = c(0,30))
-lines(tws, xgs1, col = "purple", lty = 2, lwd = 2)
+plot(t, xobs[,1], col = "blue", pch = 18) #, xlim = c(0,30))
+lines(tws, xgs1, col = "red", lty = 2, lwd = 2)
 
-plot(t, xobs[,2], col = 'orange', pch = 16, xlim = c(0,30))
-lines(tws, xgs2, col = 'green', lty = 2, lwd = 2)
+plot(t, xobs[,2], col = 'purple', pch = 16) #, xlim = c(0,30))
+lines(tws, xgs2, col = 'black', lty = 2, lwd = 2)
 
+
+#If system has 3 variables
+xgs3 <- wsindsim[,4]
+points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
+lines(tws, xgs2, col = 'black', lty = 2, lwd = 2)
