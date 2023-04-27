@@ -14,7 +14,7 @@ library(combinat)
 
 # Determine ODE problem ---------------------------------------------------
 
-ode_num <- 3 # select ODE system from the list ode_names (1-6)
+ode_num <- 5 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15                    # sol_ivp tolerance (abs and rel) for generating data
 noise_ratio <- 0.05  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
@@ -104,7 +104,7 @@ wsinit@polys <- seq(0,3,1)
 wsinit@ld <- 0.1
 wsinit@scaled_theta <- 0
 
-wsind <- getWSindyUniform(xobs, t, L = 100, overlap = 0.7)
+wsind <- getWSindyUniform(xobs, t, L = 35, overlap = 0.7)
 
 #FOR LINEAR
 #wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))

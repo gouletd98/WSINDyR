@@ -65,8 +65,8 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
     if (wsinit@useGLS > 0) {
       Cov <- (Vp %*% t(Vp)) + wsinit@useGLS*diag(dim(V)[1])
-      RT <- linalg_cholesky(Cov)
-
+      # RT <- linalg_cholesky(Cov)
+      RT <- chol(Cov) #cholesky decomp on covariance
       #CURRENT ONE
       #G <- solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), tol = 1e-15)
 
