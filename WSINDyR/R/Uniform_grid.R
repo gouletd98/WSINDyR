@@ -8,9 +8,7 @@
 
 Uniform_grid <- function(t, L, s, param) {
 
-  # function code here
   M <- length(t)
-
   p <- 16
 
   overlap <- as.integer(floor(L*(1-sqrt(1-s^(1/p)))))
@@ -31,9 +29,7 @@ Uniform_grid <- function(t, L, s, param) {
 
   }
 
-  #grid <- as.array(grid) #I think Python may be doing something diff here****
-  # N <- length(grid)
-  N <- dim(grid)[1]
+  N <- dim(grid)[1] #get the amount of rows to go through
 
   V <- matrix(0, nrow = N, ncol = M)
   Vp <- matrix(0, nrow = N, ncol = M)
@@ -43,7 +39,6 @@ Uniform_grid <- function(t, L, s, param) {
     g <- gs$g
     gp <- gs$gp
 
-    #********** THE FOLLOWING MAY NEED TO BE TWEAKED****
     a <- grid[k,1]
     b <- grid[k,2]
 

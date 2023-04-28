@@ -1,10 +1,8 @@
 # poolDatagen.R
 
 ### INPUTS...
-# xobs:
+# xobs: #the ode simulates xobs
 
-install.packages("combinat")
-library(combinat)
 
 poolDatagen <- function(xobs) {
   # generate monomials

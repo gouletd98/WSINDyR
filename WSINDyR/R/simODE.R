@@ -1,9 +1,6 @@
 # simODE.R - gets ODE simulations
 
 
-install.packages('deSolve')
-library(deSolve) # this allows us to solve IVPS
-
 simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                    noise_ratio) {
 
@@ -110,20 +107,6 @@ simODE <- function(x0, t_span, t_eval, tol_ode, ode_name, params,
                0, 0, 1, -beta)
 
     weights <- matrix(datas, nrow= 7, ncol = 4, byrow = TRUE)
-
-  } else if (ode_name == 'SIR') {
-
-    rhs <- function(t,x0,params) {
-      with(as.list(c(x0,params)), {
-        dX <- -params[1]*x0[1]*x0[2]/(x0[1]+x0[2]+x0[3])
-        dY <- (params[1]*x0[1]*x0[2]/(x0[1]+x0[2]+x0[3])) - params[2]*x0[2]
-        dZ <- params[2]*x0[2]
-        list(c(dX,dY,dZ))
-      })
-    }
-
-    datas <- c(0,0,0)
-    weights <- matrix(datas,nrow = 3, ncol = 1)
 
 
   } else {

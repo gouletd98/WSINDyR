@@ -41,7 +41,7 @@ tf_mat_row <- function(g, gp, t, t1, tk, param) {
   dts <- diff(t_grid) #time steps
   w <- 0.5*(append(dts,0) + append(0, dts)) #appends 0 to dts and dts to 0
 
-  V_row[, seq(t1,(tk+1),gap)] = g(t_grid, t[t1], t[tk])*w #may need to be t1-1, tk-1
+  V_row[, seq(t1,(tk+1),gap)] = g(t_grid, t[t1], t[tk])*w
   Vp_row[, seq(t1,(tk+1),gap)] = -gp(t_grid, t[t1], t[tk])*w
   Vp_row[,t1] = Vp_row[,t1] - g(t[t1], t[t1], t[tk])
   Vp_row[,tk] = Vp_row[,tk] + g(t[t1], t[t1], t[tk])
@@ -64,7 +64,7 @@ tf_mat_row <- function(g, gp, t, t1, tk, param) {
     # do nothing
   }
 
-  # now get everything into compiable state
+  # now get everything into compiled state
   anslist <- list("V_row" = V_row,
                   "Vp_row" = Vp_row)
   return(anslist)

@@ -19,8 +19,7 @@ wsindy <- setClass("wsindy", slots = list(polys = "numeric",
                                     scaled_theta = 0, ld = 0.05,
                                     gamma = 10^(-Inf), mult_trajectories = "False",
                                     useGLS = 10^-12))
-#NOTE - we may run into issues with trigs matrix and multiple trajectories??
-# ld = 0.001
+
 initialize.wsindy <- function(.Object, polys, trigs, scaled_theta,
                               ld, gamma, mult_trajectories) {
   .Object@polys <- polys
@@ -34,7 +33,4 @@ initialize.wsindy <- function(.Object, polys, trigs, scaled_theta,
 }
 
 #create the initialized values
-wsinit <- new("wsindy") #, polys = seq(0,5,1), trigs = matrix(1,10,10),
-                  #scaled_theta = 0, ld = 0.001,
-                  #gamma = 10^(-Inf), mult_trajectories = "False",
-              #useGLS = 10^-12)
+wsinit <- new("wsindy")

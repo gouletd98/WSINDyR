@@ -1,10 +1,9 @@
 # basis_fcn.R
 
 ### INPUTS...
-# p:
-# q:
+# p: Should be 16
+# q: Should also be 16 (user set)
 
-# Need to figure out how to specify (t, t1, tk) ???
 
 basis_fcn <- function(p, q) {
   g <- function(t, t1, tk) {

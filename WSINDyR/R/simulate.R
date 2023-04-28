@@ -5,11 +5,6 @@
 # t_span: total time
 # t_eval: times to evaluate at
 
-# get all packages
-#install.packages('deSolve')
-library(deSolve) # this allows us to solve IVPS
-
-# now get into function
 
 simulate <- function(x0, t_span, t_eval) {
 

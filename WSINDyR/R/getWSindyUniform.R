@@ -6,17 +6,9 @@
 # L: test function support
 # overlap: overlap ratio
 
-#get packages first
-#install.packages("torch")
-library(torch) #used for cholesky decomp
-
 #NOTE:
 #To call this function, please call the output as wsind **
 #otherwise, the link to other functions will be broken
-
-#initalize parameters
-L <- 30
-overlap <- 0.7
 
 getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
@@ -45,9 +37,7 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
   n <- dim(xobs)[2] #gets the columns in xobs
   w_sparse <- matrix(0, nrow = dim(Theta_0)[2], ncol = n) #create sparse matrix
 
-  #**** Might need to change below based off initialization and appending
-  # mats <- c() #empty vector
-  # ts_grids <- c() #empty vector
+  #initializes lists of tsgrids and mats
   mats <- list()
   ts_grids <- list()
 
@@ -60,16 +50,14 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
   for (i in 1:n) {
 
-    # mats <- rbind(mats, rbind(V, Vp)) #may need work
     mats <- c(mats, list(list(V,Vp)))
-    # ts_grids <- rbind(ts_grids, grid) #^same
     ts_grids <- c(ts_grids, list(grid))
 
     if (wsinit@useGLS > 0) {
       Cov <- (Vp %*% t(Vp)) + wsinit@useGLS*diag(dim(V)[1])
       # RT <- linalg_cholesky(Cov)
       RT <- chol(Cov) #cholesky decomp on covariance
-      #CURRENT ONE
+
       #G <- solve(as.matrix(RT), as.matrix(V)%*%as.matrix(Theta_0), tol = 1e-15)
 
       A <- as.matrix(RT)
@@ -104,11 +92,11 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
   }
 
-  # now get everything into compilable state
+  # now get everything into compiled state
   anslist <- list('coef' = w_sparse,
                   'tags' = tags,
                   'mats' = mats,
                   'ts_grids' = ts_grids)
   return(anslist)
-  # MUST now call function with an output associated to get list.
+
 }
