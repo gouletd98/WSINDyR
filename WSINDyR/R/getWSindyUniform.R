@@ -46,8 +46,10 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
   w_sparse <- matrix(0, nrow = dim(Theta_0)[2], ncol = n) #create sparse matrix
 
   #**** Might need to change below based off initialization and appending
-  mats <- c() #empty vector
-  ts_grids <- c() #empty vector
+  # mats <- c() #empty vector
+  # ts_grids <- c() #empty vector
+  mats <- list()
+  ts_grids <- list()
 
   ugrid <- Uniform_grid(tobs, L, overlap, param = c(0, "I", 0))
 
@@ -58,10 +60,10 @@ getWSindyUniform <- function(xobs, tobs, L, overlap) {
 
   for (i in 1:n) {
 
-    # mats <- append(mats, c(V, Vp), after = length(mats)) #may need work
-    # ts_grids <- append(ts_grids, grid, after = length(ts_grids)) #^same
-    mats <- rbind(mats, rbind(V, Vp)) #may need work
-    ts_grids <- rbind(ts_grids, grid) #^same
+    # mats <- rbind(mats, rbind(V, Vp)) #may need work
+    mats <- c(mats, list(list(V,Vp)))
+    # ts_grids <- rbind(ts_grids, grid) #^same
+    ts_grids <- c(ts_grids, list(grid))
 
     if (wsinit@useGLS > 0) {
       Cov <- (Vp %*% t(Vp)) + wsinit@useGLS*diag(dim(V)[1])

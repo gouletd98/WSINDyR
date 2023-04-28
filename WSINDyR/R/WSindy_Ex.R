@@ -14,7 +14,7 @@ library(combinat)
 
 # Determine ODE problem ---------------------------------------------------
 
-ode_num <- 5 # select ODE system from the list ode_names (1-6)
+ode_num <- 4 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15                    # sol_ivp tolerance (abs and rel) for generating data
 noise_ratio <- 0.05  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
@@ -86,13 +86,12 @@ xobs <- as.matrix(z$xobs)
 rhs <- z$rhs
 
 # plot(t, xobs)
-par(mfrow=c(1,1))
-plot(t, xobs[,1], col = "blue", pch = 18) #, ylim = c(-30,50))
-points(t, xobs[,2], col = 'orange', pch = 16)
-
-#if Lorenz
-points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
-
+colors = c("blue", "purple", "green")
+col2s = c("red", "black", "black")
+par(mfrow=c(dim(xobs)[2],1))
+for (i in 1:dim(xobs)[2]) {
+  plot(t, xobs[,i], col = colors[i], pch = 16)
+}
 
 # Build WSINDy model  -----------------------------------------------------
 
@@ -101,10 +100,11 @@ param <- ode_params
 
 #If polys need to be changed:
 wsinit@polys <- seq(0,3,1)
-wsinit@ld <- 0.1
-wsinit@scaled_theta <- 0
+wsinit@ld <- 0.05
+# wsinit@scaled_theta <- 0
+#wsinit@gamma <- 0.05
 
-wsind <- getWSindyUniform(xobs, t, L = 35, overlap = 0.7)
+wsind <- getWSindyUniform(xobs, t, L = 30, overlap = 0.7)
 
 #FOR LINEAR
 #wsindsim <- simulate(x0 = x0, t_span = seq(0,30,1), t_eval = seq(0,30,.001))
@@ -112,18 +112,19 @@ wsind <- getWSindyUniform(xobs, t, L = 35, overlap = 0.7)
 #FOR Lorenz
 wsindsim <- simulate(x0 = x0, t_span, t_eval)
 
-tws <- wsindsim[,1]
-xgs1 <- wsindsim[,2]
-xgs2 <- wsindsim[,3]
-par(mfrow=c(2,1))
-plot(t, xobs[,1], col = "blue", pch = 18) #, xlim = c(0,30))
-lines(tws, xgs1, col = "red", lty = 2, lwd = 2)
 
-plot(t, xobs[,2], col = 'purple', pch = 16) #, xlim = c(0,30))
-lines(tws, xgs2, col = 'black', lty = 2, lwd = 2)
+par(mfrow=c(dim(xobs)[2],1))
+for (i in 1:dim(xobs)[2]) {
+  plot(t, xobs[,i], col = colors[i], pch = 16)
+  lines(wsindsim[,1], wsindsim[,i+1], col = col2s[i], lty = 2, lwd = 2)
+}
 
 
-#If system has 3 variables
-xgs3 <- wsindsim[,4]
-points(t, xobs[,3], col = "green", pch = 16, cex = 0.7)
-lines(tws, xgs2, col = 'black', lty = 2, lwd = 2)
+#now plot test function locations
+par(mfrow=c(dim(xobs)[2],1))
+for (i in 1:dim(xobs)[2]) {
+  plot(t, xobs[,i], col = colors[i], pch = 16)
+  temp <- floor(apply(wsind$ts_grids[[i]], 1, mean))
+  plpoints <- mean(xobs[,i])*as.vector(matrix(1, nrow = dim(wsind$ts_grids[[i]])[1], ncol = 1))
+  points(t[temp], plpoints, col = col2s[i], pch = 1)
+}

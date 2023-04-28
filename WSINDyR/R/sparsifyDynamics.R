@@ -30,27 +30,35 @@ sparsifyDynamics <- function(Theta, dXdt, n, M = NULL) {
   # Ain <- svd(A)
   # Ximod <- pinv(Ain)%*%B
   Xi <- M * Ximod
-
+  #print(Xi)
   #Xi <- M * solve(Theta_reg, dXdt_reg)
 
   for (i in 1:10) {
-    smallinds <- as.numeric(abs(Xi) < wsinit@ld)
-    while (sum(smallinds) == length(Xi)) {
+    # smallinds <- as.numeric(abs(Xi) < wsinit@ld)
+    smallinds <- which(abs(Xi) < wsinit@ld)
+    while (length(smallinds) == length(Xi)) {
       wsinit@ld <- wsinit@ld / 2
-      smallinds <- as.numeric(abs(Xi) < wsinit@ld)
+      smallinds <- which(abs(Xi) < wsinit@ld)
     }
     Xi[smallinds] <- 0
   }
 
   for (ind in 1:n) {
-    biginds <- as.numeric(!smallinds[ind])
+    # biginds <- as.numeric(!smallinds[ind])
+    biginds <- which(abs(Xi) >= wsinit@ld)
     temp <- dXdt_reg[, ind]
     temp <- matrix(temp, nrow = length(temp), ncol = 1)
 
     #CURRENT
-    Xi[biginds, ind] <- M[biginds] %*% qr.solve(Theta_reg[, biginds], temp)
+    # Xi[biginds, ind] <- M[biginds] %*% qr.solve(Theta_reg[, biginds], temp)
 
+    thtrm <- Theta_reg[,biginds]
+    trm22 <- solve(t(thtrm) %*% thtrm) %*% t(thtrm) %*% temp
+
+    Xi[biginds, ind] <- M[biginds] * trm22
   }
+
+  #print(Xi)
 
   anslist <- list("Xi" = Xi)
   return(anslist)
