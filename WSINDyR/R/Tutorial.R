@@ -1,6 +1,6 @@
 ### Tutorial.R (APPM 4720/5720)
 ### Adam Manaster and Derek Goulet
-### Last Edit on 05/01/2023
+### Last Edit on 05/02/2023
 
 # Basic Function(s) -------------------------------------------------------
 
@@ -105,7 +105,7 @@ ggplot(data = df, aes(x = x, y = y)) +
 
 # Example w/ `qr.solve()` -------------------------------------------------
 
-# functionality incorporated in sparsifyDynamics.R
+# functionality incorporated in `sparsifyDynamics.R`
 
 # create matrix `A` and vector `b`
 A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3)
@@ -113,7 +113,7 @@ b <- c(7, 8)
 
 # solve the system of equations 'Ax = b' using QR decomposition
 # QR decomp. is a common matrix factorization technique
-  # expresses `A` as product of orth. matrix Q and upper triang. matrix R
+  # expresses `A` as product of orthonormal matrix Q and upper triangular matrix R
   # helps solve system more efficiently
 x <- qr.solve(A, b)
 
