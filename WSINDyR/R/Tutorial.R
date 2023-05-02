@@ -1,8 +1,8 @@
 ### Tutorial.R (APPM 4720/5720)
 ### Adam Manaster and Derek Goulet
-### Last Edit on 04/26/2023
+### Last Edit on 05/01/2023
 
-# Basic Function ----------------------------------------------------------
+# Basic Function(s) -------------------------------------------------------
 
 # define function `test` below
 
@@ -28,6 +28,32 @@ z0 <- 5
 
 # run the function and view result
 test(x = x0, y = y0, z = z0)
+
+### now, trying out some of the `as.<DATA>()` functions
+
+# create nested list and turn into matrix
+my_list <- list(list(1, 2, 3, 4, 5), list(6, 7, 8, 9, 10))
+my_matrix <- as.matrix(my_list)
+
+class(my_list)
+class(my_matrix)
+
+# create numeric and turn into character
+my_num <- 100
+my_char <- as.character(my_num)
+
+class(my_num)
+class(my_char)
+
+### also, showcasing the functionality of `rbind()` and `cbind()`
+
+# create matrix using vectors as ROWS
+matrix_row <- rbind(x0, y0)
+matrix_row
+
+# create matrix using vectors as COLUMNS
+matrix_col <- cbind(x0, y0)
+matrix_col
 
 
 
