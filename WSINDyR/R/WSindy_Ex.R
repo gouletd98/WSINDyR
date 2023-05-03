@@ -12,7 +12,7 @@ library(combinat)
 
 # Determine ODE problem ---------------------------------------------------
 
-ode_num <- 4 # select ODE system from the list ode_names (1-6)
+ode_num <- 1 # select ODE system from the list ode_names (1-6)
 tol_ode <- 1e-15          # sol_ivp tolerance (abs and rel) for generating data
 noise_ratio <- 0.05  #set signal-to-noise ratio(L2 sense)
 set.seed(42)
@@ -91,8 +91,8 @@ param <- ode_params
 
 #If polys need to be changed:
 #NOTE - the following 4 values can be adjusted based off ODE selection
-wsinit@polys <- seq(0,3,1)
-wsinit@ld <- 0.01
+#wsinit@polys <- seq(0,3,1)
+#wsinit@ld <- 0.01
 # wsinit@scaled_theta <- 0
 # wsinit@gamma <- 0.05
 
